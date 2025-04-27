@@ -11,7 +11,7 @@ namespace FocusMate
     public class DatabaseConnector
     {
         private string _connectionString = 
-            "Host=localhost;Port=5432;Database=focus_mate;Username=root;Password=768867";
+            "Host=localhost;Port=5432;Database=focus_mate;Username=postgres;Password=678876";
 
         public NpgsqlConnection GetConnection()
         {

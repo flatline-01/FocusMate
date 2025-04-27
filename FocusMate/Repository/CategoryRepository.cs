@@ -1,12 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Npgsql;
 
 namespace FocusMate.Repository
 {
-    internal class CategoryRepository
+    public class CategoryRepository
     {
+        private string _tableName = "categories";
+        private NpgsqlConnection _connection;
+
+        public CategoryRepository(NpgsqlConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public void CreateCategory(Category category)
+        {
+            var command = new NpgsqlCommand($"INSERT INTO {_tableName} " +
+                $"(name) VALUES (val1)", _connection);
+            command.Parameters.AddWithValue("val1", category.Name);
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            var command = new NpgsqlCommand($"UPDATE {_tableName} SET name = val1 " +
+                $"WHERE id = val2", _connection);
+            command.Parameters.AddWithValue("val1", category.Name);
+            command.Parameters.AddWithValue("val2", category.Id);
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteCategory(int id)
+        {
+            var command = new NpgsqlCommand($"DELETE FROM {_tableName} WHERE id = val1",
+                _connection);
+            command.Parameters.AddWithValue("val1", id);
+            command.ExecuteNonQuery();
+        }
+
+        public List<Category> GetAllCategories()
+        {
+            var categories = new List<Category>();
+
+            var command = new NpgsqlCommand($"SELECT * FROM {_tableName}", _connection);
+            NpgsqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Category category = new Category();
+                category.Id = reader.GetInt32(0);
+                category.Name = reader.GetString(1);
+                categories.Add(category);
+            }
+
+            return categories;
+        }
     }
 }
