@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace FocusMate
 {
-    class Task
+    public class Task
     {
         public int Id;
         public string Title;
-        public string Description;
-        public string Category;
+        public int CategoryId;
         public DateTime Date;
         public bool IsDone;
     }

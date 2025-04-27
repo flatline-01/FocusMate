@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FocusMate
 {
-    class Category
+    public class Category
     {
         public int Id;
         public string Name;

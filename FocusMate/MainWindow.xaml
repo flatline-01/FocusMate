@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="45*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="55*"/>
+        </Grid.RowDefinitions>
+        
+        <DataGrid x:Name="TasksList" d:ItemsSource="{d:SampleData ItemCount=10}" Grid.Row="1" Grid.Column="1"/>
+        <Button Grid.Column="1" Content="Add Task" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Width="64"/>
 
     </Grid>
 </Window>
