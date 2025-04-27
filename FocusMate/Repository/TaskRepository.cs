@@ -41,7 +41,7 @@ namespace FocusMate.Repository
         }
 
         public List<Task> GetAllTasks() {
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
 
             var command = new NpgsqlCommand($"SELECT * FROM {_tableName}", _connection);
             NpgsqlDataReader reader = command.ExecuteReader();
@@ -60,7 +60,7 @@ namespace FocusMate.Repository
         }
 
         public List<Task> GetAllTasksByCategoryId(int categoryId) {
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
 
             var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE category_id = val1", 
                 _connection);
