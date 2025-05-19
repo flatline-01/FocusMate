@@ -17,6 +17,16 @@ namespace FocusMate
             DatabaseConnector databaseConnector = new DatabaseConnector();
             NpgsqlConnection connections = databaseConnector.GetConnection();
             _categoryRepository = new CategoryRepository(connections);
+            LoadCategories();
+        }
+
+        private void LoadCategories()
+        {
+            List<Category> categories = _categoryRepository.GetAllCategories();
+            if (categories.Count != 0) {
+                CategoriesListBox.ItemsSource = categories;
+                NoCategoriesTextBlock.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void AddNewCategoryButtobClick(object sender, RoutedEventArgs e)
@@ -26,6 +36,7 @@ namespace FocusMate
             _categoryRepository.CreateCategory(category);
             CategoryNameTextBox.Text = "";
             MessageBox.Show($"Category \"{category.Name}\" added successfully.");
+            CategoriesListBox.ItemsSource = _categoryRepository.GetAllCategories();
         }
     }
 }

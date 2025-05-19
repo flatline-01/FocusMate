@@ -21,5 +21,10 @@ namespace FocusMate.Model
         public string CategoryName { get { return _categoryName; } set { _categoryName = value; } }
         public DateTime Date { get { return _date; } set { _date = value; } }
         public bool IsDone { get { return _isDone; } set { _isDone = value; } }
+
+        //public override string ToString()
+        //{
+        //    return $"{CategoryName}\t{Title}\t{Date.ToShortDateString()}\t{}";
+        //}
     }
 }

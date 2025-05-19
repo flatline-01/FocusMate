@@ -2,6 +2,7 @@
 using System.Windows;
 using Npgsql;
 using Task = FocusMate.Model.Task;
+using System.Windows.Controls;
 
 namespace FocusMate
 {
@@ -10,20 +11,41 @@ namespace FocusMate
     /// </summary>
     public partial class MainWindow : Window
     {
+        TaskRepository _taskRepository;
+        CategoryRepository _categoryRepository;
         public MainWindow()
         {
             InitializeComponent();
             
             DatabaseConnector connector = new DatabaseConnector();
             NpgsqlConnection connection = connector.GetConnection();
-            TaskRepository taskRepository = new TaskRepository(connection);
-            List<Task> tasks = taskRepository.GetAllTasks();
+            _taskRepository = new TaskRepository(connection);
+            _categoryRepository = new CategoryRepository(connection);
+
+            LoadTasks();
+        }
+
+        private void LoadTasks() {
+            List<Task> tasks = _taskRepository.GetAllTasks();
 
             if (tasks.Count > 0)
             {
                 NoTasks.Visibility = Visibility.Collapsed;
             }
+            SetCategoryNames(tasks);
             TasksList.ItemsSource = tasks;
+        }
+
+        private void SetCategoryNames(List<Task> tasks) {
+            foreach (var task in tasks) {
+                task.CategoryName = _categoryRepository.GetCategoryById(task.Id).Name;
+            }
+        }
+
+        private void DataGridAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.PropertyName == "Id" || e.PropertyName == "CategoryId")
+                e.Column = null;
         }
 
         private void AddTaskButtonClick(object sender, RoutedEventArgs e)

@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="TasksList"  Grid.Row="1" Grid.Column="1"/>
+        <DataGrid x:Name="TasksList"  Grid.Row="1" Grid.Column="1" AutoGenerateColumns="true" AutoGeneratingColumn="DataGridAutoGeneratingColumn"/>
         <TextBlock x:Name="NoTasks"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="You don't have any tasks yet" VerticalAlignment="Center" FontSize="16"/>
 
         <WrapPanel  Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
