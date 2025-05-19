@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using FocusMate.Model;
+using Npgsql;
 
 namespace FocusMate.Repository
 {
@@ -15,8 +16,8 @@ namespace FocusMate.Repository
         public void CreateCategory(Category category)
         {
             var command = new NpgsqlCommand($"INSERT INTO {_tableName} " +
-                $"(name) VALUES (val1)", _connection);
-            command.Parameters.AddWithValue("val1", category.Name);
+                $"(name) VALUES (@name)", _connection);
+            command.Parameters.AddWithValue("@name", category.Name);
             command.ExecuteNonQuery();
         }
 
@@ -51,7 +52,7 @@ namespace FocusMate.Repository
                 category.Name = reader.GetString(1);
                 categories.Add(category);
             }
-
+            reader.Close();
             return categories;
         }
     }

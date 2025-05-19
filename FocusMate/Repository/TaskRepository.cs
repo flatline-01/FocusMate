@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Task = FocusMate.Model.Task;
+using Npgsql;
 
 namespace FocusMate.Repository
 {
@@ -55,7 +56,7 @@ namespace FocusMate.Repository
                 task.IsDone = reader.GetBoolean(4);
                 tasks.Add(task);
             }
-
+            reader.Close();
             return tasks; 
         }
 
@@ -77,7 +78,7 @@ namespace FocusMate.Repository
                 task.IsDone = reader.GetBoolean(4);
                 tasks.Add(task);
             }
-
+            reader.Close();
             return tasks;
         }
 
@@ -94,7 +95,7 @@ namespace FocusMate.Repository
                 task.Date = reader.GetDateTime(3);
                 task.IsDone = reader.GetBoolean(4);
             }
-
+            reader.Close();
             return task;
         }
     }

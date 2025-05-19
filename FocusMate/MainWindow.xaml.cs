@@ -1,15 +1,7 @@
 ﻿using FocusMate.Repository;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Npgsql;
+using Task = FocusMate.Model.Task;
 
 namespace FocusMate
 {
@@ -22,7 +14,6 @@ namespace FocusMate
         {
             InitializeComponent();
             
-            // initialize TasksList
             DatabaseConnector connector = new DatabaseConnector();
             NpgsqlConnection connection = connector.GetConnection();
             TaskRepository taskRepository = new TaskRepository(connection);
@@ -32,14 +23,19 @@ namespace FocusMate
             {
                 NoTasks.Visibility = Visibility.Collapsed;
             }
-
             TasksList.ItemsSource = tasks;
         }
 
         private void AddTaskButtonClick(object sender, RoutedEventArgs e)
         {
-            EditorWindow editor = new EditorWindow();
-            editor.Show();
+            TaskEditorWindow window = new TaskEditorWindow();
+            window.ShowDialog();
+        }
+
+        private void AddCategoryButtonClick(object sender, RoutedEventArgs e)
+        {
+            CategoryEditorWindow window = new CategoryEditorWindow();
+            window.ShowDialog();
         }
     }
 }
