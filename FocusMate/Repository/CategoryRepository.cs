@@ -70,5 +70,18 @@ namespace FocusMate.Repository
             reader.Close();
             return category;
         }
+
+        public int GetCategoryIdByName(string name) {
+            var command = new NpgsqlCommand($"SELECT id FROM {_tableName} WHERE name = @name", _connection);
+            command.Parameters.AddWithValue("@name", name);
+            NpgsqlDataReader reader = command.ExecuteReader();
+            int id = -1;
+            while (reader.Read())
+            {
+                id = reader.GetInt32(0);
+            }
+            reader.Close();
+            return id;
+        }
     }
 }

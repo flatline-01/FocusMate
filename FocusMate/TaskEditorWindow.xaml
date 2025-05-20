@@ -19,19 +19,19 @@
 
         <WrapPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Width="80" Content="Title:" FontSize="16"/>
-            <TextBox Width="200" TextWrapping="Wrap" FontSize="16" />
+            <TextBox  x:Name="TaskTitleTextBox" Width="200" TextWrapping="Wrap" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </WrapPanel>
 
         <WrapPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Width="80" Content="Category:" FontSize="16"/>
-            <ComboBox x:Name="CategoriesComboBox" HorizontalAlignment="Left" Width="200" Grid.Column="1"/>
+            <ComboBox x:Name="CategoriesComboBox" HorizontalAlignment="Left" Width="200" Grid.Column="1" VerticalAlignment="Center"/>
         </WrapPanel>
 
         <WrapPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Width="80" Content="Date:" FontSize="16"/>
-            <DatePicker FontSize="16" Grid.Column="1" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <DatePicker x:Name="DatePicker" FontSize="16" Grid.Column="1" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </WrapPanel>
 
-        <Button Grid.Column="1" Content="Save" Grid.Row="5" VerticalAlignment="Center" FontSize="16" Width="150" Height="35" HorizontalAlignment="Center"/>
+        <Button Grid.Column="1" Content="Save" Grid.Row="5" VerticalAlignment="Center" FontSize="16" Width="150" Height="35" HorizontalAlignment="Center" Click="SaveTaskButtonClick"/>
     </Grid>
 </Window>

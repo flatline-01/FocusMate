@@ -27,7 +27,6 @@ namespace FocusMate
 
         private void LoadTasks() {
             List<Task> tasks = _taskRepository.GetAllTasks();
-
             if (tasks.Count > 0)
             {
                 NoTasks.Visibility = Visibility.Collapsed;
@@ -51,13 +50,23 @@ namespace FocusMate
         private void AddTaskButtonClick(object sender, RoutedEventArgs e)
         {
             TaskEditorWindow window = new TaskEditorWindow();
+            window.Closing += TaskEditorWindowClosing;
             window.ShowDialog();
+        }
+
+        private void TaskEditorWindowClosing(object sender, System.ComponentModel.CancelEventArgs e) { 
+            TasksList.ItemsSource = _taskRepository.GetAllTasks();
+            (sender as Window).Closing -= TaskEditorWindowClosing;
         }
 
         private void AddCategoryButtonClick(object sender, RoutedEventArgs e)
         {
             CategoryEditorWindow window = new CategoryEditorWindow();
             window.ShowDialog();
+        }
+
+        private void StartTimer(object sender, RoutedEventArgs e) { 
+            
         }
     }
 }

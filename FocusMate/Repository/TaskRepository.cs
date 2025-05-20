@@ -15,29 +15,29 @@ namespace FocusMate.Repository
         public void CreateTask(Task task) {
             var command = new NpgsqlCommand($"INSERT INTO {_tableName} " +
                 $"(title, category_id, date, is_done) VALUES" +
-                "(val1, val2, val3, val4)", _connection);
-            command.Parameters.AddWithValue("val1", task.Title);
-            command.Parameters.AddWithValue("val2", task.CategoryId);
-            command.Parameters.AddWithValue("val3", task.Date);
-            command.Parameters.AddWithValue("val4", task.IsDone);
+                "(@title, @category_id, @date, @is_done)", _connection);
+            command.Parameters.AddWithValue("@title", task.Title);
+            command.Parameters.AddWithValue("@category_id", task.CategoryId);
+            command.Parameters.AddWithValue("@date", task.Date);
+            command.Parameters.AddWithValue("@is_done", task.IsDone);
             command.ExecuteNonQuery();
         }
 
         public void UpdateTask(Task task) {
-            var command = new NpgsqlCommand($"UPDATE {_tableName} SET title = val1, " +
-                $"category_id = val2, date = val3, is_done = val4 WHERE id = val5", _connection);
-            command.Parameters.AddWithValue("val1", task.Title);
-            command.Parameters.AddWithValue("val2", task.CategoryId);
-            command.Parameters.AddWithValue("val3", task.Date);
-            command.Parameters.AddWithValue("val4", task.IsDone);
-            command.Parameters.AddWithValue("val5", task.Id);
+            var command = new NpgsqlCommand($"UPDATE {_tableName} SET title = @title, " +
+                $"category_id = @category_id, date = @date, is_done = @is_done WHERE id = @id", _connection);
+            command.Parameters.AddWithValue("@title", task.Title);
+            command.Parameters.AddWithValue("@category_id", task.CategoryId);
+            command.Parameters.AddWithValue("@date", task.Date);
+            command.Parameters.AddWithValue("@is_done", task.IsDone);
+            command.Parameters.AddWithValue("@id", task.Id);
             command.ExecuteNonQuery();
         } 
 
         public void DeleteTask(int id) {
-            var command = new NpgsqlCommand($"DELETE FROM {_tableName} WHERE id = val1", 
+            var command = new NpgsqlCommand($"DELETE FROM {_tableName} WHERE id = @id", 
                 _connection);
-            command.Parameters.AddWithValue("val1", id);
+            command.Parameters.AddWithValue("@id", id);
             command.ExecuteNonQuery();
         }
 
@@ -63,9 +63,9 @@ namespace FocusMate.Repository
         public List<Task> GetAllTasksByCategoryId(int categoryId) {
             var tasks = new List<Task>();
 
-            var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE category_id = val1", 
+            var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE category_id = @category_id", 
                 _connection);
-            command.Parameters.Add(categoryId);
+            command.Parameters.AddWithValue(categoryId);
             NpgsqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
@@ -83,8 +83,8 @@ namespace FocusMate.Repository
         }
 
         public Task GetTaskById(int id) {
-            var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE id = val1", _connection);
-            command.Parameters.AddWithValue("val1", id);
+            var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE id = @id", _connection);
+            command.Parameters.AddWithValue("@id", id);
             NpgsqlDataReader reader = command.ExecuteReader();
             Task task = new Task();
 
