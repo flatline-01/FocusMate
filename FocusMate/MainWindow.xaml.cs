@@ -3,6 +3,7 @@ using System.Windows;
 using Npgsql;
 using Task = FocusMate.Model.Task;
 using System.Windows.Controls;
+using System.Reflection.PortableExecutable;
 
 namespace FocusMate
 {
@@ -22,7 +23,7 @@ namespace FocusMate
             _taskRepository = new TaskRepository(connection);
             _categoryRepository = new CategoryRepository(connection);
 
-            LoadTasks();
+           LoadTasks();
         }
 
         private void LoadTasks() {
@@ -32,7 +33,39 @@ namespace FocusMate
                 NoTasks.Visibility = Visibility.Collapsed;
             }
             SetCategoryNames(tasks);
+            CreateButtonColumn();
+            CreateCheckBoxColumn();
             TasksList.ItemsSource = tasks;
+       
+        }
+
+        private void CreateButtonColumn()
+        {
+            DataGridTemplateColumn column = new DataGridTemplateColumn
+            {
+                CanUserReorder = false,
+                Width = 85,
+                CanUserResize = false,
+                CanUserSort = false,
+                Header = string.Empty,
+                DisplayIndex = 4,
+                CellTemplateSelector = new CustomTemplateSelector(Templates.ButtonTemplate)
+            };
+            TasksList.Columns.Add(column);
+        }
+
+        private void CreateCheckBoxColumn()
+        {
+            DataGridTemplateColumn column = new DataGridTemplateColumn { 
+                CanUserReorder = false, 
+                Width = 20, 
+                IsReadOnly = false, 
+                CanUserResize = false, 
+                Header = string.Empty,
+                DisplayIndex = 3,
+                CellTemplateSelector = new CustomTemplateSelector(Templates.CheckboxTemplate)
+            };
+            TasksList.Columns.Add(column);
         }
 
         private void SetCategoryNames(List<Task> tasks) {
@@ -43,8 +76,35 @@ namespace FocusMate
 
         private void DataGridAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            if (e.PropertyName == "Id" || e.PropertyName == "CategoryId")
-                e.Column = null;
+            if (e.Column is not null)
+            {
+                e.Column.CanUserResize = false;
+                e.Column.IsReadOnly = true;
+                e.Column.CanUserReorder = false;
+            }
+
+            switch (e.PropertyName)
+            {
+                case "Id":
+                case "CategoryId":
+                    e.Column = null;
+                    break;
+                case "Title":
+                    e.Column.Width = 250;
+                    break;
+                case "CategoryName":
+                    e.Column.Width = 100;
+                    break;
+                case "IsDone":
+                    e.Column.Header = string.Empty;
+                    e.Column.Width = 20;
+                    e.Column.IsReadOnly = false;
+                    e.Column = null; 
+                    break;
+                case "Date":
+                    e.Column.Width = 60;
+                    break;
+            }
         }
 
         private void AddTaskButtonClick(object sender, RoutedEventArgs e)
@@ -65,8 +125,17 @@ namespace FocusMate
             window.ShowDialog();
         }
 
-        private void StartTimer(object sender, RoutedEventArgs e) { 
-            
+        private void StartTaskButtonClick(object sender, RoutedEventArgs e) {
+            MessageBox.Show("something");
+        }
+
+        private void TaskCompletingHandler(object sender, EventArgs e) {
+            MessageBox.Show("Completed");
+        }
+
+        public enum Templates { 
+            ButtonTemplate,
+            CheckboxTemplate
         }
     }
 }
