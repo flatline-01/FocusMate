@@ -41,10 +41,10 @@ namespace FocusMate.Repository
             command.ExecuteNonQuery();
         }
 
-        public List<Task> GetAllTasks() {
+        public List<Task> GetAllPendingTasks() {
             var tasks = new List<Task>();
 
-            var command = new NpgsqlCommand($"SELECT * FROM {_tableName}", _connection);
+            var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE is_done = false", _connection);
             NpgsqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read()) { 

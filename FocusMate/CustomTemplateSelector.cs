@@ -29,7 +29,6 @@ namespace FocusMate
                     template = (DataTemplate) w.FindResource("CompleteTaskCheckBoxTemplate");
                     break;
             }
-
             return template;
         }
 

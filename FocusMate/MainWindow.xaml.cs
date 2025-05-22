@@ -4,6 +4,9 @@ using Npgsql;
 using Task = FocusMate.Model.Task;
 using System.Windows.Controls;
 using System.Reflection.PortableExecutable;
+using System.Windows.Media;
+using System.Windows.Controls.Primitives;
+using System.ComponentModel;
 
 namespace FocusMate
 {
@@ -27,16 +30,20 @@ namespace FocusMate
         }
 
         private void LoadTasks() {
-            List<Task> tasks = _taskRepository.GetAllTasks();
+            List<Task> tasks = _taskRepository.GetAllPendingTasks();
             if (tasks.Count > 0)
             {
                 NoTasks.Visibility = Visibility.Collapsed;
             }
             SetCategoryNames(tasks);
-            CreateButtonColumn();
-            CreateCheckBoxColumn();
+
+            if (TasksList.Columns.Count != 7)
+            {
+                CreateButtonColumn();
+                CreateCheckBoxColumn();
+            }
+            
             TasksList.ItemsSource = tasks;
-       
         }
 
         private void CreateButtonColumn()
@@ -48,7 +55,7 @@ namespace FocusMate
                 CanUserResize = false,
                 CanUserSort = false,
                 Header = string.Empty,
-                DisplayIndex = 4,
+                DisplayIndex = 6,
                 CellTemplateSelector = new CustomTemplateSelector(Templates.ButtonTemplate)
             };
             TasksList.Columns.Add(column);
@@ -62,7 +69,7 @@ namespace FocusMate
                 IsReadOnly = false, 
                 CanUserResize = false, 
                 Header = string.Empty,
-                DisplayIndex = 3,
+                DisplayIndex = 5,
                 CellTemplateSelector = new CustomTemplateSelector(Templates.CheckboxTemplate)
             };
             TasksList.Columns.Add(column);
@@ -87,7 +94,7 @@ namespace FocusMate
             {
                 case "Id":
                 case "CategoryId":
-                    e.Column = null;
+                    e.Column.Visibility = Visibility.Collapsed;
                     break;
                 case "Title":
                     e.Column.Width = 250;
@@ -114,8 +121,8 @@ namespace FocusMate
             window.ShowDialog();
         }
 
-        private void TaskEditorWindowClosing(object sender, System.ComponentModel.CancelEventArgs e) { 
-            TasksList.ItemsSource = _taskRepository.GetAllTasks();
+        private void TaskEditorWindowClosing(object sender, System.ComponentModel.CancelEventArgs e) {
+            LoadTasks();
             (sender as Window).Closing -= TaskEditorWindowClosing;
         }
 
@@ -126,12 +133,52 @@ namespace FocusMate
         }
 
         private void StartTaskButtonClick(object sender, RoutedEventArgs e) {
-            MessageBox.Show("something");
+            
         }
 
         private void TaskCompletingHandler(object sender, EventArgs e) {
-            MessageBox.Show("Completed");
+
+            CheckBox cb = (CheckBox) sender;
+            DataGridRow row = GetRow(cb);
+            int rowIndex = row.GetIndex();
+            Task task = (Task) TasksList.Items.GetItemAt(rowIndex);
+            task.IsDone = true;
+            _taskRepository.UpdateTask(task);
+
+            IEditableCollectionView items = TasksList.Items; //Cast to interface
+            if (items.CanRemove)
+            {
+                items.Remove(task);
+            }
         }
+
+
+        private DataGridRow GetRow(DependencyObject obj) {
+            DependencyObject child = obj;
+            while (true)
+            {
+                DependencyObject parent = VisualTreeHelper.GetParent(child);
+
+                if (child is DataGridRow)
+                    return child as DataGridRow;
+                else
+                    child = parent;
+            }
+        }
+
+        private DependencyObject FindParent(DependencyObject child)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            if (parent != null)
+            {
+                return parent;
+            }
+            else
+            {
+                return FindParent(parent);
+            }
+        }
+
 
         public enum Templates { 
             ButtonTemplate,
