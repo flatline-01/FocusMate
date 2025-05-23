@@ -77,7 +77,8 @@ namespace FocusMate
 
         private void SetCategoryNames(List<Task> tasks) {
             foreach (var task in tasks) {
-                task.CategoryName = _categoryRepository.GetCategoryById(task.Id).Name;
+                MessageBox.Show(task.CategoryId + "");
+                task.CategoryName = _categoryRepository.GetCategoryById(task.CategoryId).Name;
             }
         }
 
@@ -152,7 +153,6 @@ namespace FocusMate
             }
         }
 
-
         private DataGridRow GetRow(DependencyObject obj) {
             DependencyObject child = obj;
             while (true)
@@ -178,7 +178,6 @@ namespace FocusMate
                 return FindParent(parent);
             }
         }
-
 
         public enum Templates { 
             ButtonTemplate,
