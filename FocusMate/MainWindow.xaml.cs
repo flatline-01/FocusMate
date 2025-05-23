@@ -7,6 +7,7 @@ using System.Reflection.PortableExecutable;
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
+using System.Windows.Data;
 
 namespace FocusMate
 {
@@ -105,14 +106,12 @@ namespace FocusMate
                     e.Column.DisplayIndex = 1;
                     break;
                 case "IsDone":
-                    //e.Column.Header = string.Empty;
-                    //e.Column.Width = 20;
-                    //e.Column.IsReadOnly = false;
                     e.Column = null; 
                     break;
                 case "Date":
                     e.Column.Width = 60;
                     e.Column.DisplayIndex = 2;
+                    (e.Column as DataGridTextColumn).Binding.StringFormat = "dd.MM.yy";
                     break;
             }
         }
