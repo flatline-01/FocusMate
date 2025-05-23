@@ -77,7 +77,6 @@ namespace FocusMate
 
         private void SetCategoryNames(List<Task> tasks) {
             foreach (var task in tasks) {
-                MessageBox.Show(task.CategoryId + "");
                 task.CategoryName = _categoryRepository.GetCategoryById(task.CategoryId).Name;
             }
         }
@@ -99,18 +98,21 @@ namespace FocusMate
                     break;
                 case "Title":
                     e.Column.Width = 250;
+                    e.Column.DisplayIndex = 0;
                     break;
                 case "CategoryName":
                     e.Column.Width = 100;
+                    e.Column.DisplayIndex = 1;
                     break;
                 case "IsDone":
-                    e.Column.Header = string.Empty;
-                    e.Column.Width = 20;
-                    e.Column.IsReadOnly = false;
+                    //e.Column.Header = string.Empty;
+                    //e.Column.Width = 20;
+                    //e.Column.IsReadOnly = false;
                     e.Column = null; 
                     break;
                 case "Date":
                     e.Column.Width = 60;
+                    e.Column.DisplayIndex = 2;
                     break;
             }
         }
