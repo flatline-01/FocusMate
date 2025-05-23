@@ -135,7 +135,8 @@ namespace FocusMate
         }
 
         private void StartTaskButtonClick(object sender, RoutedEventArgs e) {
-            
+            TimerWindow window = new TimerWindow();
+            window.ShowDialog();
         }
 
         private void TaskCompletingHandler(object sender, EventArgs e) {
@@ -147,7 +148,7 @@ namespace FocusMate
             task.IsDone = true;
             _taskRepository.UpdateTask(task);
 
-            IEditableCollectionView items = TasksList.Items; //Cast to interface
+            IEditableCollectionView items = TasksList.Items; 
             if (items.CanRemove)
             {
                 items.Remove(task);
