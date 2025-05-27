@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusMate"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800" ResizeMode="NoResize">
     <Window.Resources>
         <DataTemplate x:Key="StartTaskButtonTemplate">
             <Button x:Name="StartTaskButton" Click="StartTaskButtonClick" Content="Start"/>
@@ -21,7 +21,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.5*"/>
             <RowDefinition Height="4*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -31,7 +31,7 @@
         <TextBlock x:Name="NoTasks"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="You don't have any tasks yet" VerticalAlignment="Center" FontSize="16"/>
 
         <WrapPanel  Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Add Task" Name="AddTaskButton" Width="100" Click="AddTaskButtonClick" Margin="0,0,30,0"/>
+            <Button Content="Add Task" Name="AddTaskButton" Width="100" Height="30" Click="AddTaskButtonClick" Margin="0,0,30,0"/>
             <Button Content="Add Category" Name="AddCategoryButton" Width="100" Click="AddCategoryButtonClick" Margin="30,0,0,0"/>
         </WrapPanel>
     </Grid>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusMate"
         mc:Ignorable="d"
-        Title="CategoryEditorWindow" Height="250" Width="200">
+        Title="CategoryEditorWindow" Height="250" Width="200" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="120*"/>
