@@ -1,5 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Media;
+﻿using System.IO;
+using System.Media;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace FocusMate
@@ -7,7 +8,6 @@ namespace FocusMate
     /// <summary>
     /// Interaction logic for TimerWindow.xaml
     /// </summary>
-    /// 
 
     public partial class TimerWindow : Window
     {
@@ -33,6 +33,7 @@ namespace FocusMate
             TimerDisplay.Text = _interval.ToString("mm':'ss");
             if (_interval == TimeSpan.Zero) {
                 _timer.Stop();
+                PlaySound();
                 _sessionNumber++;
                 switch (_sessionNumber) {
                     case 1:
@@ -63,6 +64,13 @@ namespace FocusMate
         private void ContinueTimerButtonClick(object sender, RoutedEventArgs e)
         {
             _timer.Start();
+        }
+
+        private void PlaySound() {
+            SoundPlayer player = new SoundPlayer();
+            string absoluteFilePath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\\Resource\\timerSound.wav";
+            player.SoundLocation = absoluteFilePath;
+            player.Play();
         }
 
         private enum Sessions { 
