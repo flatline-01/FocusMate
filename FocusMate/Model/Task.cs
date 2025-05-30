@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FocusMate.Model
+﻿namespace FocusMate.Model
 {
     public class Task
     {
@@ -24,7 +18,7 @@ namespace FocusMate.Model
 
         public override string ToString()
         {
-            return $"{CategoryName}\t{Title}\t{Date.ToShortDateString()}";
+            return $"{Title}\t{CategoryName}\t{Date.ToShortDateString()}";
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
 using System.Windows.Data;
+using FocusMate.View;
 
 namespace FocusMate
 {
@@ -27,7 +28,8 @@ namespace FocusMate
             _taskRepository = new TaskRepository(connection);
             _categoryRepository = new CategoryRepository(connection);
 
-           LoadTasks();
+            LoadTasks();
+            CreateReminder();
         }
 
         private void LoadTasks() {
@@ -179,6 +181,16 @@ namespace FocusMate
             {
                 return FindParent(parent);
             }
+        }
+
+
+        private void CreateReminder() {
+            int unresolvedTasksNumber = _taskRepository.CountPendingTasksForToday();
+            Reminder r = new Reminder();
+            r.IsInfinite = true;
+            r.Delay = 240;
+            r.Text = $"You have {unresolvedTasksNumber} tasks to accomplish for today.";
+            r.DisplayMessage();
         }
 
         public enum Templates { 

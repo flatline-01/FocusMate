@@ -1,5 +1,6 @@
 ﻿using Task = FocusMate.Model.Task;
 using Npgsql;
+using System.Windows;
 
 namespace FocusMate.Repository
 {
@@ -58,6 +59,19 @@ namespace FocusMate.Repository
             }
             reader.Close();
             return tasks; 
+        }
+
+        public int CountPendingTasksForToday() {
+            int count = 0;
+            string todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
+            var command = new NpgsqlCommand(
+                $"SELECT COUNT(*) FROM {_tableName} " +
+                $"WHERE is_done = false AND date = '{todaysDate}'", _connection);
+            NpgsqlDataReader reader = command.ExecuteReader();
+            while (reader.Read()) { 
+                count = reader.GetInt32(0);
+            }
+            return count;
         }
 
         public List<Task> GetAllTasksByCategoryId(int categoryId) {
