@@ -71,6 +71,7 @@ namespace FocusMate.Repository
             while (reader.Read()) { 
                 count = reader.GetInt32(0);
             }
+            reader.Close();
             return count;
         }
 
