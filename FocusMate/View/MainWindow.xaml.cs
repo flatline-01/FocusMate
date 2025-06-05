@@ -3,11 +3,8 @@ using System.Windows;
 using Npgsql;
 using Task = FocusMate.Model.Task;
 using System.Windows.Controls;
-using System.Reflection.PortableExecutable;
 using System.Windows.Media;
-using System.Windows.Controls.Primitives;
 using System.ComponentModel;
-using System.Windows.Data;
 using FocusMate.View;
 
 namespace FocusMate
@@ -191,6 +188,11 @@ namespace FocusMate
             r.Delay = 240;
             r.Text = $"You have {unresolvedTasksNumber} tasks to accomplish for today.";
             r.DisplayMessage();
+        }
+
+        private void ViewProgressButtonClick(object sender, RoutedEventArgs e) { 
+            ProgressWindow window = new ProgressWindow();
+            window.Show();  
         }
 
         public enum Templates { 

@@ -32,7 +32,8 @@
 
         <WrapPanel  Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Content="Add Task" Name="AddTaskButton" Width="100" Height="30" Click="AddTaskButtonClick" Margin="0,0,30,0"/>
-            <Button Content="Add Category" Name="AddCategoryButton" Width="100" Click="AddCategoryButtonClick" Margin="30,0,0,0"/>
+            <Button Content="Add Category" Name="AddCategoryButton" Width="100" Click="AddCategoryButtonClick" Margin="30,0,30,0"/>
+            <Button Content="View Progress" x:Name="ViewProgressButton" Width="100"  Margin="30,0,0,0" Click="ViewProgressButtonClick"/>
         </WrapPanel>
     </Grid>
 </Window>

@@ -16,12 +16,11 @@ namespace FocusMate
         public override DataTemplate SelectTemplate(object inItem, DependencyObject inContainer)
         {
             DataRowView row = inItem as DataRowView;
-            MainWindow w = GetWindow(inContainer);
+            Window w = GetWindow(inContainer);
             DataTemplate template = null;
 
             switch (_template)
             {
-
                 case Templates.ButtonTemplate:
                     template = (DataTemplate) w.FindResource("StartTaskButtonTemplate");
                     break;
@@ -32,15 +31,15 @@ namespace FocusMate
             return template;
         }
 
-        private MainWindow GetWindow(DependencyObject obj)
+        private Window GetWindow(DependencyObject obj)
         {
             DependencyObject child = obj;
             while (true)
             {
                 DependencyObject parent = VisualTreeHelper.GetParent(child);
 
-                if (child is MainWindow)
-                    return child as MainWindow;
+                if (child is Window)
+                    return child as Window;
                 else
                     child = parent;
             }
