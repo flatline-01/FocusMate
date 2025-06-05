@@ -104,8 +104,6 @@ namespace FocusMate.View
             string previousWeekStart = today.AddDays(-7).ToString("yyyy-MM-dd");
             string previousWeekEnd = today.AddDays(-1).ToString("yyyy-MM-dd");
 
-            MessageBox.Show($"{previousWeekStart} {previousWeekEnd}");
-
             SolvedTasksLastWeek.Text = $"{_taskRepository.CountNumberOfSovedTasksLastWeek(
                 previousWeekStart, previousWeekEnd)}";
 
