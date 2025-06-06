@@ -5,10 +5,6 @@ using System.Windows.Threading;
 
 namespace FocusMate
 {
-    /// <summary>
-    /// Interaction logic for TimerWindow.xaml
-    /// </summary>
-
     public partial class TimerWindow : Window
     {
         private DispatcherTimer _timer;

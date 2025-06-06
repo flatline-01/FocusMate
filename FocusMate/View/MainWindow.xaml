@@ -5,19 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusMate"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800" ResizeMode="NoResize">
+        Title="MainWindow" Height="500" Width="800" ResizeMode="CanMinimize">
     <Window.Resources>
+        <Image x:Key="editIcon" Source="/Resource/editIcon.png" />
+        <Image x:Key="trashIcon" Source="/Resource/trashIcon.png" Width="20" Height="20"/>
+        <Image x:Key="playIcon" Source="/Resource/playIcon.png" Width="20" Height="20"/>
+
         <DataTemplate x:Key="StartTaskButtonTemplate">
-            <Button x:Name="StartTaskButton" Click="StartTaskButtonClick" Content="Start"/>
+            <Button x:Name="StartTaskButton" Click="StartTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="/Resource/playIcon.png" Width="20" Height="20"/>
+            </Button>
+        </DataTemplate>
+        <DataTemplate x:Key="EditTaskButtonTemplate">
+            <Button x:Name="EditTaskButton" Click="EditTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="/Resource/editIcon.png" Width="20" Height="20"/>
+            </Button>
+        </DataTemplate>
+        <DataTemplate x:Key="DeleteTaskButtonTemplate">
+            <Button x:Name="DeleteTaskButton" Click="DeleteTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="/Resource/trashIcon.png" Width="20" Height="20"/>
+            </Button>
         </DataTemplate>
         <DataTemplate x:Key="CompleteTaskCheckBoxTemplate">
-            <CheckBox x:Name="CompleteTaskCheckBox" Checked="TaskCompletingHandler"></CheckBox>
+            <CheckBox x:Name="CompleteTaskCheckBox" Checked="TaskCompletingHandler"/>
         </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="4.5*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -27,14 +43,22 @@
         </Grid.RowDefinitions>
 
         <DataGrid x:Name="TasksList" Grid.Row="1" Grid.Column="1" AutoGenerateColumns="True" AutoGeneratingColumn="DataGridAutoGeneratingColumn" CanUserAddRows="false">
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="IsHitTestVisible" Value="False"/>
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Setters>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Height" Value="25"/>
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
-            </DataGrid.RowStyle>
+            </DataGrid.CellStyle>
         </DataGrid>
-
-
 
         <TextBlock x:Name="NoTasks"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="You don't have any tasks yet" VerticalAlignment="Center" FontSize="16"/>
 

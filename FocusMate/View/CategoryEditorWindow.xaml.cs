@@ -5,9 +5,6 @@ using System.Windows;
 
 namespace FocusMate
 {
-    /// <summary>
-    /// Interaction logic for CategoryEditorWindow.xaml
-    /// </summary>
     public partial class CategoryEditorWindow : Window
     {
         CategoryRepository _categoryRepository;

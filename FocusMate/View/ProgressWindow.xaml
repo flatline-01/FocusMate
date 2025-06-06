@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusMate.View"
         mc:Ignorable="d"
-        Title="Progress" Height="500" Width="800" ResizeMode="NoResize">
+        Title="Progress" Height="500" Width="800" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <SolidColorBrush x:Key="GreenColor" Color="#FF60CE18"/>
+        <SolidColorBrush x:Key="RedColor" Color="#FFF72525"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -34,11 +39,11 @@
             <Label HorizontalAlignment="Center" Width="150" VerticalAlignment="Center" Margin="30,0,0,0" >Stats for the last week:</Label>
             <WrapPanel Width="80" Margin="50,0,50,0" >
                 <TextBlock x:Name="SolvedTasksLastWeek" Width="80" Text="0" FontSize="32" TextAlignment="Center" Foreground="#FF60CE18"/>
-                <Label Width="80" Foreground="#FF60CE18">Solved tasks</Label>
+                <Label Width="80" Foreground="{StaticResource GreenColor}">Solved tasks</Label>
             </WrapPanel>
             <WrapPanel Width="90" Margin="40,0,0,0">
                 <TextBlock x:Name="UnsolvedTasksLastWeek"  Width="90" Text="0" FontSize="32" TextAlignment="Center" VerticalAlignment="Center" Foreground="#FFF72525"/>
-                <Label Foreground="#FFF72525">Unsolved tasks</Label>
+                <Label Foreground="{StaticResource RedColor}">Unsolved tasks</Label>
             </WrapPanel>
         </WrapPanel>
 
@@ -46,11 +51,11 @@
             <Label Width="150" VerticalAlignment="Center" Margin="30,0,0,0">Stats for all time:</Label>
             <WrapPanel Width="80"  Margin="50,0,50,0">
                 <TextBlock x:Name="SolvedTasksAllTime" Width="80" Text="0" FontSize="32" TextAlignment="Center" Foreground="#FF60CE18" />
-                <Label Foreground="#FF60CE18">Solved tasks</Label>
+                <Label Foreground="{StaticResource GreenColor}">Solved tasks</Label>
             </WrapPanel>
             <WrapPanel Width="90"  Margin="40,0,0,0">
                 <TextBlock x:Name="UnsolvedTasksAllTime" Width="90" Text="0" FontSize="32" TextAlignment="Center" Foreground="#FFF72525"/>
-                <Label Foreground="#FFF72525">Unsolved tasks</Label>
+                        <Label Foreground="{StaticResource RedColor}">Unsolved tasks</Label>
             </WrapPanel>
         </WrapPanel>
     </Grid>

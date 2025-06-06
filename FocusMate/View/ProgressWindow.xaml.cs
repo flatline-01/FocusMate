@@ -9,9 +9,6 @@ using Task = FocusMate.Model.Task;
 
 namespace FocusMate.View
 {
-    /// <summary>
-    /// Interaction logic for Progress.xaml
-    /// </summary>
     public partial class ProgressWindow : Window
     {
         TaskRepository _taskRepository;
@@ -19,6 +16,7 @@ namespace FocusMate.View
         public ProgressWindow()
         {
             InitializeComponent();
+
             DatabaseConnector connector = new DatabaseConnector();
             NpgsqlConnection connection = connector.GetConnection();
             _taskRepository = new TaskRepository(connection);
@@ -46,12 +44,11 @@ namespace FocusMate.View
         private void LoadTasks()
         {
             List<Task> tasks = _taskRepository.GetAllPastTasks();
-            if (tasks.Count > 0)
-            {
-                NoTasks.Visibility = Visibility.Collapsed;
-            }
-            SetCategoryNames(tasks);
 
+            if (tasks.Count > 0)
+                NoTasks.Visibility = Visibility.Collapsed;
+
+            SetCategoryNames(tasks);
             TasksList.ItemsSource = tasks;
         }
 
@@ -83,6 +80,7 @@ namespace FocusMate.View
                     e.Column.DisplayIndex = 0;
                     break;
                 case "CategoryName":
+                    e.Column.Header = "Category";
                     e.Column.Width = 100;
                     e.Column.DisplayIndex = 1;
                     break;
@@ -114,7 +112,6 @@ namespace FocusMate.View
         private void CalculateStatsForAllTime()
         {
             SolvedTasksAllTime.Text = $"{_taskRepository.CountNumberOfSovedTasksAllTime()}";
-
             UnsolvedTasksAllTime.Text = $"{_taskRepository.CountNumberOfUnsovedTasksAllTime()}";
         }
     }

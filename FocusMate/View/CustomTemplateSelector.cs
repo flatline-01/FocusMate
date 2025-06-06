@@ -21,8 +21,14 @@ namespace FocusMate
 
             switch (_template)
             {
-                case Templates.ButtonTemplate:
+                case Templates.StartButtonTemplate:
                     template = (DataTemplate) w.FindResource("StartTaskButtonTemplate");
+                    break;
+                case Templates.EditButtonTemplate:
+                    template = (DataTemplate)w.FindResource("EditTaskButtonTemplate");
+                    break;
+                case Templates.DeleteButtonTemplate:
+                    template = (DataTemplate)w.FindResource("DeleteTaskButtonTemplate");
                     break;
                 case Templates.CheckboxTemplate:
                     template = (DataTemplate) w.FindResource("CompleteTaskCheckBoxTemplate");

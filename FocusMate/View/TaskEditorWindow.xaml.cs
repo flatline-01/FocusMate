@@ -6,16 +6,16 @@ using System.Windows;
 
 namespace FocusMate
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class TaskEditorWindow : Window
     {
         private CategoryRepository _categoryRepository;
         private TaskRepository _taskRepository;
+        private Task _task;
 
-        public TaskEditorWindow()
+        public TaskEditorWindow(Task task)
         {
+            _task = task;
+
             InitializeComponent();
 
             DatabaseConnector connector = new DatabaseConnector();
@@ -23,26 +23,54 @@ namespace FocusMate
             _categoryRepository = new CategoryRepository(connection);
             _taskRepository = new TaskRepository(connection);
             LoadCategoriesDropBox();
+
+            if (_task != null) {
+                TaskTitleTextBox.Text = task.Title;
+                DatePicker.SelectedDate = task.Date;
+
+                for (int i = 0; i < CategoriesComboBox.Items.Count; i++) {
+                    Category category = (Category) CategoriesComboBox.Items.GetItemAt(i);
+                    if (category.Id == task.CategoryId)
+                        CategoriesComboBox.SelectedIndex = task.CategoryId - 1;
+                }
+            }
         }
 
         private void LoadCategoriesDropBox() {
             List<Category> categories = _categoryRepository.GetAllCategories();
             if (categories.Count != 0) 
                 CategoriesComboBox.ItemsSource = categories;
-            else CategoriesComboBox.SelectedItem = "Default";
         }
 
         private void SaveTaskButtonClick(object sender, RoutedEventArgs e)
         {
             int categoryId = _categoryRepository.GetCategoryIdByName(CategoriesComboBox.SelectedItem.ToString());
+            string message = "";
+            bool wasNull = false;
 
-            Task task = new Task();
-            task.Title = TaskTitleTextBox.Text;
-            task.CategoryId = categoryId;
-            task.Date = DatePicker.SelectedDate.Value;
-            task.IsDone = false;
-            _taskRepository.CreateTask(task);
-            MessageBox.Show($"Task \"{task.Title}\" created successfully.");
+            if (_task == null)
+            {
+                wasNull = true;
+                _task = new Task();
+            }
+
+            _task.Title = TaskTitleTextBox.Text;
+            _task.CategoryId = categoryId;
+            _task.Date = DatePicker.SelectedDate.Value;
+            _task.IsDone = false;
+
+            if (wasNull)
+            {
+                _taskRepository.CreateTask(_task);
+                message = $"Task \"{_task.Title}\" created successfully.";
+            }
+            else {
+                _taskRepository.UpdateTask(_task);
+                message = $"Task \"{_task.Title}\" updated successfully.";
+            }
+
+            _task = null;
+            MessageBox.Show(message);
             ClearFields();
         }
 
