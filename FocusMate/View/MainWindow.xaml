@@ -11,29 +11,29 @@
         <Image x:Key="trashIcon" Source="/Resource/trashIcon.png" Width="20" Height="20"/>
         <Image x:Key="playIcon" Source="/Resource/playIcon.png" Width="20" Height="20"/>
 
-        <DataTemplate x:Key="StartTaskButtonTemplate">
+        <DataTemplate x:Key="StartButtonTemplate">
             <Button x:Name="StartTaskButton" Click="StartTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image Source="/Resource/playIcon.png" Width="20" Height="20"/>
             </Button>
         </DataTemplate>
-        <DataTemplate x:Key="EditTaskButtonTemplate">
+        <DataTemplate x:Key="EditButtonTemplate">
             <Button x:Name="EditTaskButton" Click="EditTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image Source="/Resource/editIcon.png" Width="20" Height="20"/>
             </Button>
         </DataTemplate>
-        <DataTemplate x:Key="DeleteTaskButtonTemplate">
+        <DataTemplate x:Key="DeleteButtonTemplate">
             <Button x:Name="DeleteTaskButton" Click="DeleteTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image Source="/Resource/trashIcon.png" Width="20" Height="20"/>
             </Button>
         </DataTemplate>
-        <DataTemplate x:Key="CompleteTaskCheckBoxTemplate">
-            <CheckBox x:Name="CompleteTaskCheckBox" Checked="TaskCompletingHandler"/>
+        <DataTemplate x:Key="CheckBoxTemplate">
+            <CheckBox x:Name="CompleteTaskCheckBox" Checked="TaskCompletingHandler" Margin="0,4,0,0"/>
         </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4.5*"/>
+            <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -42,7 +42,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="TasksList" Grid.Row="1" Grid.Column="1" AutoGenerateColumns="True" AutoGeneratingColumn="DataGridAutoGeneratingColumn" CanUserAddRows="false">
+        <DataGrid x:Name="TasksList" Grid.Row="1" Grid.Column="1" AutoGenerateColumns="True" AutoGeneratingColumn="DataGridAutoGeneratingColumn" CanUserAddRows="false" FontSize="16">
             <DataGrid.CellStyle>
                 <Style TargetType="{x:Type DataGridCell}">
                     <Style.Setters>
@@ -63,9 +63,9 @@
         <TextBlock x:Name="NoTasks"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="You don't have any tasks yet" VerticalAlignment="Center" FontSize="16"/>
 
         <WrapPanel  Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Add Task" Name="AddTaskButton" Width="100" Height="30" Click="AddTaskButtonClick" Margin="0,0,30,0"/>
-            <Button Content="Add Category" Name="AddCategoryButton" Width="100" Click="AddCategoryButtonClick" Margin="30,0,30,0"/>
-            <Button Content="View Progress" x:Name="ViewProgressButton" Width="100"  Margin="30,0,0,0" Click="ViewProgressButtonClick"/>
+            <Button FontSize="16" Content="Add Task" Name="AddTaskButton" Width="130" Height="30" Click="AddTaskButtonClick" Margin="0,0,30,0"/>
+            <Button FontSize="16" Content="Add Category" Name="AddCategoryButton" Width="130" Click="AddCategoryButtonClick" Margin="30,0,30,0"/>
+            <Button FontSize="16" Content="View Progress" x:Name="ViewProgressButton" Width="130"  Margin="30,0,0,0" Click="ViewProgressButtonClick"/>
         </WrapPanel>
     </Grid>
 </Window>

@@ -2,8 +2,6 @@
 using Npgsql;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Interop;
 using System.Windows.Media;
 using Task = FocusMate.Model.Task;
 
@@ -76,16 +74,16 @@ namespace FocusMate.View
                     e.Column = null;
                     break;
                 case "Title":
-                    e.Column.Width = 350;
+                    e.Column.Width = 375;
                     e.Column.DisplayIndex = 0;
                     break;
                 case "CategoryName":
                     e.Column.Header = "Category";
-                    e.Column.Width = 100;
+                    e.Column.Width = 120;
                     e.Column.DisplayIndex = 1;
                     break;
                 case "Date":
-                    e.Column.Width = 65;
+                    e.Column.Width = 70;
                     e.Column.DisplayIndex = 2;
                     (e.Column as DataGridTextColumn).Binding.StringFormat = "dd.MM.yy";
                     break;

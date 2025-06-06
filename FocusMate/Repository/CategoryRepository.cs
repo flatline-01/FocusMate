@@ -1,5 +1,6 @@
 ﻿using FocusMate.Model;
 using Npgsql;
+using System.Windows;
 
 namespace FocusMate.Repository
 {
@@ -23,19 +24,25 @@ namespace FocusMate.Repository
 
         public void UpdateCategory(Category category)
         {
-            var command = new NpgsqlCommand($"UPDATE {_tableName} SET name = val1 " +
-                $"WHERE id = val2", _connection);
-            command.Parameters.AddWithValue("val1", category.Name);
-            command.Parameters.AddWithValue("val2", category.Id);
+            var command = new NpgsqlCommand($"UPDATE {_tableName} SET name = @name " +
+                $"WHERE id = @id", _connection);
+            command.Parameters.AddWithValue("@name", category.Name);
+            command.Parameters.AddWithValue("@id", category.Id);
             command.ExecuteNonQuery();
         }
 
         public void DeleteCategory(int id)
         {
-            var command = new NpgsqlCommand($"DELETE FROM {_tableName} WHERE id = val1",
+            var command = new NpgsqlCommand($"DELETE FROM {_tableName} WHERE id = @id",
                 _connection);
-            command.Parameters.AddWithValue("val1", id);
-            command.ExecuteNonQuery();
+            command.Parameters.AddWithValue("@id", id);
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (NpgsqlException e) {
+                MessageBox.Show("You can't delete this category because you have tasks with it.");
+            }
         }
 
         public List<Category> GetAllCategories()

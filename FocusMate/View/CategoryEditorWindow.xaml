@@ -5,28 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusMate"
         mc:Ignorable="d"
-        Title="CategoryEditorWindow" Height="250" Width="200" ResizeMode="CanMinimize">
+        Title="CategoryEditorWindow" Height="350" Width="350" ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <Image x:Key="editIcon" Source="/Resource/editIcon.png" />
+        <Image x:Key="trashIcon" Source="/Resource/trashIcon.png" Width="20" Height="20"/>
+
+        <DataTemplate x:Key="EditButtonTemplate">
+            <Button x:Name="EditCategoryButton" Click="EditCategoryButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="/Resource/editIcon.png" Width="20" Height="20"/>
+            </Button>
+        </DataTemplate>
+        <DataTemplate x:Key="DeleteButtonTemplate">
+            <Button x:Name="DeleteCategoryButton" Click="DeleteCategoryButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="/Resource/trashIcon.png" Width="20" Height="20"/>
+            </Button>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="120*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="47*"/>
-            <RowDefinition Height="47*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <WrapPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="2">
-            <Label Content="Categories:"></Label>
-            <ListBox Name="CategoriesListBox" Height="100" Width="160"/>
+        <WrapPanel Width="250" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0" >
+            <Label Content="Categories:" FontSize="16"/>
+            <DataGrid AutoGenerateColumns="True" AutoGeneratingColumn="DataGridAutoGeneratingColumn" Name="CategoriesList" HeadersVisibility="None" Height="150" Width="250" FontSize="16" CanUserAddRows="False"/>
         </WrapPanel>
 
-        <TextBlock x:Name="NoCategoriesTextBlock" Grid.Row="0" Text="No categories." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,62,0,0"/>
+        <TextBlock x:Name="NoCategoriesTextBlock" Grid.Row="0" Text="No categories." FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-        <WrapPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="Category:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox x:Name="CategoryNameTextBox" TextWrapping="Wrap" VerticalAlignment="Center" Width="100"/>
+        <WrapPanel Width="250" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label FontSize="16" Content="Category:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox FontSize="16" x:Name="CategoryNameTextBox" TextWrapping="Wrap" VerticalAlignment="Center" Width="160" Margin="10,0,0,0"/>
         </WrapPanel>
 
-        <Button Grid.Row="3" Content="Add" Width="120" Click="AddNewCategoryButtobClick" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
+        <Button FontSize="16" Grid.Row="3" Content="Save" Width="100" Click="AddNewCategoryButtobClick" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </Window>

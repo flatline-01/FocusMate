@@ -6,8 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.ComponentModel;
 using FocusMate.View;
-using static FocusMate.MainWindow;
-using System;
 
 namespace FocusMate
 {
@@ -86,14 +84,14 @@ namespace FocusMate
                     break;
                 case "CategoryName":
                     e.Column.Header = "Category";
-                    e.Column.Width = 70;
+                    e.Column.Width = 100;
                     e.Column.DisplayIndex = 1;
                     break;
                 case "IsDone":
                     e.Column = null; 
                     break;
                 case "Date":
-                    e.Column.Width = 55;
+                    e.Column.Width = 70;
                     e.Column.DisplayIndex = 2;
                     (e.Column as DataGridTextColumn).Binding.StringFormat = "dd.MM.yy";
                     break;
@@ -107,7 +105,7 @@ namespace FocusMate
             window.ShowDialog();
         }
 
-        private void TaskEditorWindowClosing(object sender, System.ComponentModel.CancelEventArgs e) {
+        private void TaskEditorWindowClosing(object sender, CancelEventArgs e) {
             LoadTasks();
             (sender as Window).Closing -= TaskEditorWindowClosing;
         }
@@ -124,28 +122,35 @@ namespace FocusMate
         }
 
         private void EditTaskButtonClick(object sender, RoutedEventArgs e) {
-            Button b = (Button) sender;
-            DataGridRow row = GetRow(b);
-            int rowIndex = row.GetIndex();
-            Task task = (Task) TasksList.Items.GetItemAt(rowIndex);
+            Task task = GetTask((Button) sender);
             var window = new TaskEditorWindow(task);
             window.Closing += TaskEditorWindowClosing;
             window.ShowDialog();
         }
 
-        private void DeleteTaskButtonClick(object sender, RoutedEventArgs e) { }
+        private void DeleteTaskButtonClick(object sender, RoutedEventArgs e) {
+            Task task = GetTask((Button) sender);
+            _taskRepository.DeleteTask(task.Id);
+            LoadTasks();
+        }
 
-        private void TaskCompletingHandler(object sender, EventArgs e) {
+        private async void TaskCompletingHandler(object sender, EventArgs e) {
             CheckBox cb = (CheckBox) sender;
-            DataGridRow row = GetRow(cb);
-            int rowIndex = row.GetIndex();
-            Task task = (Task) TasksList.Items.GetItemAt(rowIndex);
+            Task task = GetTask(cb);
             task.IsDone = true;
             _taskRepository.UpdateTask(task);
 
-            IEditableCollectionView items = TasksList.Items; 
-            if (items.CanRemove)
+            await System.Threading.Tasks.Task.Delay(500);
+
+            IEditableCollectionView items = TasksList.Items;
+            if (items.CanRemove && cb.IsChecked.HasValue)
                 items.Remove(task);
+        }
+
+        private Task GetTask(DependencyObject obj) {
+            DataGridRow row = GetRow(obj);
+            int rowIndex = row.GetIndex();
+            return (Task)TasksList.Items.GetItemAt(rowIndex);
         }
 
         private DataGridRow GetRow(DependencyObject obj) {
