@@ -3,13 +3,13 @@ using System.Windows;
 using Npgsql;
 using Task = FocusMate.Model.Task;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.ComponentModel;
 using FocusMate.View;
+using Templates = FocusMate.View.IWindow.Templates;
 
 namespace FocusMate
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IWindow
     {
         TaskRepository _taskRepository;
         CategoryRepository _categoryRepository;
@@ -22,45 +22,26 @@ namespace FocusMate
             _taskRepository = new TaskRepository(connection);
             _categoryRepository = new CategoryRepository(connection);
 
-            LoadTasks();
+            LoadContent();
             CreateReminder();
         }
 
-        private void LoadTasks() {
+        public void LoadContent() {
             List<Task> tasks = _taskRepository.GetAllPendingTasks();
             if (tasks.Count > 0)
                 NoTasks.Visibility = Visibility.Collapsed;
 
-            SetCategoryNames(tasks);
+            ((IWindow)this).SetCategoryNames(tasks, _categoryRepository);
 
             if (TasksList.Columns.Count != 9)
             {
-                CreateColumn(5, 20, Templates.CheckboxTemplate);
-                CreateColumn(6, 30, Templates.StartButtonTemplate);
-                CreateColumn(7, 30, Templates.EditButtonTemplate);
-                CreateColumn(8, 30, Templates.DeleteButtonTemplate);
+                ((IWindow)this).CreateColumn(5, 20, Templates.CheckboxTemplate, TasksList);
+                ((IWindow)this).CreateColumn(6, 30, Templates.StartButtonTemplate, TasksList);
+                ((IWindow)this).CreateColumn(7, 30, Templates.EditButtonTemplate, TasksList);
+                ((IWindow)this).CreateColumn(8, 30, Templates.DeleteButtonTemplate, TasksList);
             }
             
             TasksList.ItemsSource = tasks;
-        }
-
-        private void CreateColumn(int index, int width, Templates template) {
-            DataGridTemplateColumn column = new DataGridTemplateColumn
-            {
-                CanUserReorder = false,
-                Width = width,
-                CanUserResize = false,
-                CanUserSort = false,
-                Header = string.Empty,
-                DisplayIndex = index,
-                CellTemplateSelector = new CustomTemplateSelector(template)
-            };
-            TasksList.Columns.Add(column);
-        }
-
-        private void SetCategoryNames(List<Task> tasks) {
-            foreach (var task in tasks) 
-                task.CategoryName = _categoryRepository.GetCategoryById(task.CategoryId).Name;
         }
 
         private void DataGridAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -79,12 +60,12 @@ namespace FocusMate
                     e.Column.Visibility = Visibility.Collapsed;
                     break;
                 case "Title":
-                    e.Column.Width = 300;
+                    e.Column.Width = 290;
                     e.Column.DisplayIndex = 0;
                     break;
                 case "CategoryName":
                     e.Column.Header = "Category";
-                    e.Column.Width = 100;
+                    e.Column.Width = 110;
                     e.Column.DisplayIndex = 1;
                     break;
                 case "IsDone":
@@ -106,14 +87,28 @@ namespace FocusMate
         }
 
         private void TaskEditorWindowClosing(object sender, CancelEventArgs e) {
-            LoadTasks();
+            LoadContent();
             (sender as Window).Closing -= TaskEditorWindowClosing;
         }
 
         private void AddCategoryButtonClick(object sender, RoutedEventArgs e)
         {
             CategoryEditorWindow window = new CategoryEditorWindow();
+            window.Closing += CategoryEditorWindowClosing;
             window.ShowDialog();
+        }
+
+        private void CategoryEditorWindowClosing(object sender, CancelEventArgs e)
+        {
+            LoadContent();
+            (sender as Window).Closing -= CategoryEditorWindowClosing;
+        }
+
+
+        private void ViewProgressButtonClick(object sender, RoutedEventArgs e)
+        {
+            ProgressWindow window = new ProgressWindow();
+            window.Show();
         }
 
         private void StartTaskButtonClick(object sender, RoutedEventArgs e) {
@@ -122,21 +117,21 @@ namespace FocusMate
         }
 
         private void EditTaskButtonClick(object sender, RoutedEventArgs e) {
-            Task task = GetTask((Button) sender);
+            Task task = (Task) ((IWindow)this).GetElement((Button) sender, TasksList);
             var window = new TaskEditorWindow(task);
             window.Closing += TaskEditorWindowClosing;
             window.ShowDialog();
         }
 
         private void DeleteTaskButtonClick(object sender, RoutedEventArgs e) {
-            Task task = GetTask((Button) sender);
+            Task task = (Task)((IWindow)this).GetElement((Button) sender, TasksList);
             _taskRepository.DeleteTask(task.Id);
-            LoadTasks();
+            LoadContent();
         }
 
         private async void TaskCompletingHandler(object sender, EventArgs e) {
             CheckBox cb = (CheckBox) sender;
-            Task task = GetTask(cb);
+            Task task = (Task) ((IWindow)this).GetElement(cb, TasksList);
             task.IsDone = true;
             _taskRepository.UpdateTask(task);
 
@@ -147,34 +142,6 @@ namespace FocusMate
                 items.Remove(task);
         }
 
-        private Task GetTask(DependencyObject obj) {
-            DataGridRow row = GetRow(obj);
-            int rowIndex = row.GetIndex();
-            return (Task)TasksList.Items.GetItemAt(rowIndex);
-        }
-
-        private DataGridRow GetRow(DependencyObject obj) {
-            DependencyObject child = obj;
-            while (true)
-            {
-                DependencyObject parent = VisualTreeHelper.GetParent(child);
-
-                if (child is DataGridRow)
-                    return child as DataGridRow;
-                else
-                    child = parent;
-            }
-        }
-
-        private DependencyObject FindParent(DependencyObject child)
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
-            if (parent != null)
-                return parent;
-            else
-                return FindParent(parent);
-        }
-
         private void CreateReminder() {
             int unresolvedTasksNumber = _taskRepository.CountPendingTasksForToday();
             Reminder r = new Reminder();
@@ -182,18 +149,6 @@ namespace FocusMate
             r.Delay = 240;
             r.Text = $"You have {unresolvedTasksNumber} tasks to accomplish for today.";
             r.DisplayMessage();
-        }
-
-        private void ViewProgressButtonClick(object sender, RoutedEventArgs e) { 
-            ProgressWindow window = new ProgressWindow();
-            window.Show();  
-        }
-
-        public enum Templates { 
-            StartButtonTemplate,
-            EditButtonTemplate,
-            DeleteButtonTemplate,
-            CheckboxTemplate
         }
     }
 }

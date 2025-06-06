@@ -7,7 +7,7 @@ using Task = FocusMate.Model.Task;
 
 namespace FocusMate.View
 {
-    public partial class ProgressWindow : Window
+    public partial class ProgressWindow : Window, IWindow
     {
         TaskRepository _taskRepository;
         CategoryRepository _categoryRepository;
@@ -20,7 +20,7 @@ namespace FocusMate.View
             _taskRepository = new TaskRepository(connection);
             _categoryRepository = new CategoryRepository(connection);
 
-            LoadTasks();
+            LoadContent();
             CalculateStatsForLastWeek();
             CalculateStatsForAllTime();
         }
@@ -39,23 +39,16 @@ namespace FocusMate.View
             }                   
         }
 
-        private void LoadTasks()
+        public void LoadContent()
         {
             List<Task> tasks = _taskRepository.GetAllPastTasks();
 
             if (tasks.Count > 0)
                 NoTasks.Visibility = Visibility.Collapsed;
 
-            SetCategoryNames(tasks);
+            ((IWindow)this).SetCategoryNames(tasks, _categoryRepository);
             TasksList.ItemsSource = tasks;
         }
-
-        private void SetCategoryNames(List<Task> tasks)
-        {
-            foreach (var task in tasks)
-                task.CategoryName = _categoryRepository.GetCategoryById(task.CategoryId).Name;
-        }
-
 
         private void DataGridAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {

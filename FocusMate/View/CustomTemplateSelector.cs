@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Templates = FocusMate.MainWindow.Templates;
+using Templates = FocusMate.View.IWindow.Templates;
 
 namespace FocusMate
 {
