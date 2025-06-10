@@ -1,7 +1,11 @@
 {
   "profiles": {
     "FocusMate": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "dbms_username": "postgres",
+        "dbms_password": "678876"
+      }
     }
   }
 }

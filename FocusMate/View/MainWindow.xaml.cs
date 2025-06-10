@@ -112,7 +112,8 @@ namespace FocusMate
         }
 
         private void StartTaskButtonClick(object sender, RoutedEventArgs e) {
-            TimerWindow window = new TimerWindow();
+            Task task = (Task)((IWindow)this).GetElement((Button)sender, TasksList);
+            TimerWindow window = new TimerWindow(task.Title);
             window.ShowDialog();
         }
 

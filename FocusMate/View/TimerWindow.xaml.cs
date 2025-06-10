@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Media;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -11,10 +12,11 @@ namespace FocusMate
         private TimeSpan _interval;
         private int _sessionNumber = 0;
 
-        public TimerWindow()
+        public TimerWindow(string taskTitle)
         {
             InitializeComponent();
             InitializeTimer((int) Sessions.Work);
+            TaskTitle.Text = taskTitle; 
         }
 
         private void InitializeTimer(int duration) {
@@ -63,10 +65,12 @@ namespace FocusMate
         }
 
         private void PlaySound() {
-            SoundPlayer player = new SoundPlayer();
-            string absoluteFilePath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\\Resource\\timerSound.wav";
-            player.SoundLocation = absoluteFilePath;
-            player.Play();
+            SoundPlayer player;
+            using (Stream stream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("FocusMate.Resource.timerSound.wav")) {
+                player = new SoundPlayer(stream);
+                player.Play();
+            }
         }
 
         private enum Sessions { 

@@ -25,9 +25,9 @@
     <Resource Include="Resource\playIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resource\timerSound.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <EmbeddedResource Include="Resource\timerSound.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Resource Include="Resource\trashIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

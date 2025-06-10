@@ -8,10 +8,13 @@
         Title="TimerWindow" Height="400" Width="400" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="TimerDisplay" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="72" Grid.Row="0" Text="00:00"/>
+        <WrapPanel Height="200" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock x:Name="TimerDisplay" FontSize="72"  Width="300" Text="00:00" TextAlignment="Center"/>
+            <TextBlock x:Name="TaskTitle" TextWrapping="Wrap" Width="300" FontSize="24" TextAlignment="Center" Margin="0,30,0,0"/>
+        </WrapPanel>
         <WrapPanel Grid.Row="1" VerticalAlignment="Center">
             <Button Content="Stop" FontSize="24" Width="150" Height="50" Click="StopTimerButtonClick" Margin="25,0,0,0"/>
             <Button Content="Continue" FontSize="24" Width="150" Height="50" Click="ContinueTimerButtonClick" Margin="50,0,0,0"/>
