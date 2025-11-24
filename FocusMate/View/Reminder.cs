@@ -27,16 +27,15 @@ namespace FocusMate.View
         private async void DisplayMessageNtimes(PeriodicTimer timer)
         {
             int i = 0;
-            while (await _timer.WaitForNextTickAsync() &&
-                i < _count) {
-                MessageBox.Show(_text);
+            while (await _timer.WaitForNextTickAsync() && i < _count) {
+                MessageBox.Show(_text, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 i++;
             }
         }
 
         private async void DisplayMessageInfinite(PeriodicTimer timer) {
             while (await _timer.WaitForNextTickAsync())
-                MessageBox.Show(_text);
+                MessageBox.Show(_text, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

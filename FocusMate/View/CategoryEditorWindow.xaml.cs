@@ -43,21 +43,28 @@ namespace FocusMate
 
         private void AddNewCategoryButtobClick(object sender, RoutedEventArgs e)
         {
-            bool wasNull = false;
-            if (_category == null) { 
-                _category = new Category();
-                wasNull = true;
+            if (CategoryNameTextBox.Text is null || CategoryNameTextBox.Text == "")
+            {
+                MessageBox.Show("You must specify the name of the category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            _category.Name = CategoryNameTextBox.Text;
+            else {
+                bool wasNull = false;
+                if (_category == null)
+                {
+                    _category = new Category();
+                    wasNull = true;
+                }
+                _category.Name = CategoryNameTextBox.Text;
 
-            if (wasNull) 
-                _categoryRepository.CreateCategory(_category);
-            else
-                _categoryRepository.UpdateCategory(_category);
-            CategoryNameTextBox.Text = "";
-            MessageBox.Show($"Category \"{_category.Name}\" saved successfully.");
-            LoadContent();
-            _category = null;
+                if (wasNull)
+                    _categoryRepository.CreateCategory(_category);
+                else
+                    _categoryRepository.UpdateCategory(_category);
+                CategoryNameTextBox.Text = null;
+                MessageBox.Show($"Category \"{_category.Name}\" saved successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadContent();
+                _category = null;
+            }
         }
 
         private void DataGridAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e) {
@@ -74,7 +81,7 @@ namespace FocusMate
                     e.Column = null;
                     break;
                 case "Name":
-                    e.Column.Width = 185;
+                    e.Column.Width = 175;
                     e.Column.DisplayIndex = 0;
                     break;
             }

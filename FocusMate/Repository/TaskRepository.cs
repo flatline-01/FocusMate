@@ -63,7 +63,7 @@ namespace FocusMate.Repository
         public List<Task> GetAllPastTasks() {
             var tasks = new List<Task>();
             string todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
-            var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE date < '{todaysDate}' OR is_done = true",
+            var command = new NpgsqlCommand($"SELECT * FROM {_tableName} WHERE date < '{todaysDate}' OR is_done = true ORDER BY date DESC",
                 _connection);
             var reader = command.ExecuteReader();
             while (reader.Read()) {
@@ -93,7 +93,7 @@ namespace FocusMate.Repository
             return count;
         }
 
-        public int CountNumberOfSovedTasksLastWeek(string startdate, string endDate) {
+        public int CountNumberOfSovedTasksForPeriod(string startdate, string endDate) {
             int count = 0;
             var command = new NpgsqlCommand(
                 $"SELECT COUNT(*) FROM {_tableName} " +
@@ -107,7 +107,7 @@ namespace FocusMate.Repository
             return count;
         }
 
-        public int CountNumberOfUnsolvedTasksLastWeek(string startdate, string endDate)
+        public int CountNumberOfUnsolvedTasksForPeriond(string startdate, string endDate)
         {
             int count = 0;
             var command = new NpgsqlCommand(
@@ -125,8 +125,7 @@ namespace FocusMate.Repository
         public int CountNumberOfSovedTasksAllTime()
         {
             int count = 0;
-            var command = new NpgsqlCommand(
-                $"SELECT COUNT(*) FROM {_tableName} WHERE is_done = true", _connection);
+            var command = new NpgsqlCommand($"SELECT COUNT(*) FROM {_tableName} WHERE is_done = true", _connection);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -139,8 +138,7 @@ namespace FocusMate.Repository
         public int CountNumberOfUnsovedTasksAllTime()
         {
             int count = 0;
-            var command = new NpgsqlCommand(
-                $"SELECT COUNT(*) FROM {_tableName} WHERE is_done = false", _connection);
+            var command = new NpgsqlCommand($"SELECT COUNT(*) FROM {_tableName} WHERE is_done = false", _connection);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {

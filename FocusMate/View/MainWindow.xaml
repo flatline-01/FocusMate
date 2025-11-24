@@ -5,31 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusMate"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800" ResizeMode="CanMinimize">
-    <Window.Resources>
-        <Image x:Key="editIcon" Source="/Resource/editIcon.png" />
-        <Image x:Key="trashIcon" Source="/Resource/trashIcon.png" Width="20" Height="20"/>
-        <Image x:Key="playIcon" Source="/Resource/playIcon.png" Width="20" Height="20"/>
+        Title="Dashboard" Height="500" Width="800" ResizeMode="CanMinimize">
 
-        <DataTemplate x:Key="StartButtonTemplate">
-            <Button x:Name="StartTaskButton" Click="StartTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image Source="/Resource/playIcon.png" Width="20" Height="20"/>
-            </Button>
-        </DataTemplate>
-        <DataTemplate x:Key="EditButtonTemplate">
-            <Button x:Name="EditTaskButton" Click="EditTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image Source="/Resource/editIcon.png" Width="20" Height="20"/>
-            </Button>
-        </DataTemplate>
-        <DataTemplate x:Key="DeleteButtonTemplate">
-            <Button x:Name="DeleteTaskButton" Click="DeleteTaskButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image Source="/Resource/trashIcon.png" Width="20" Height="20"/>
-            </Button>
-        </DataTemplate>
-        <DataTemplate x:Key="CheckBoxTemplate">
-            <CheckBox x:Name="CompleteTaskCheckBox" Checked="TaskCompletingHandler" Margin="0,4,0,0"/>
-        </DataTemplate>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <DataTemplate x:Key="StartButtonTemplate">
+                <Button x:Name="StartTaskButton" Click="StartTaskButtonClick" Style="{StaticResource ButtonWithImageStyle}">
+                    <Image Source="/Resource/playIcon.png" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+            </DataTemplate>
+            <DataTemplate x:Key="EditButtonTemplate">
+                <Button x:Name="EditTaskButton" Click="EditTaskButtonClick" Style="{StaticResource ButtonWithImageStyle}">
+                    <Image Source="/Resource/editIcon.png" Style="{StaticResource Icon}"/>
+                </Button>
+            </DataTemplate>
+            <DataTemplate x:Key="DeleteButtonTemplate">
+                <Button x:Name="DeleteTaskButton" Click="DeleteTaskButtonClick" Style="{StaticResource ButtonWithImageStyle}">
+                    <Image Source="/Resource/trashIcon.png" Style="{StaticResource Icon}"/>
+                </Button>
+            </DataTemplate>
+            <DataTemplate x:Key="CheckBoxTemplate">
+                <CheckBox x:Name="CompleteTaskCheckBox" Checked="TaskCompletingHandler" Margin="0,4,0,0"/>
+            </DataTemplate>
+        </ResourceDictionary>
     </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -42,30 +46,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="TasksList" Grid.Row="1" Grid.Column="1" AutoGenerateColumns="True" AutoGeneratingColumn="DataGridAutoGeneratingColumn" CanUserAddRows="false" FontSize="16">
-            <DataGrid.CellStyle>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Setters>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Height" Value="25"/>
-                    </Style.Setters>
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
+        <DataGrid x:Name="TasksList" Grid.Row="1" Grid.Column="1" AutoGeneratingColumn="DataGridAutoGeneratingColumn" Style="{StaticResource CustomDataGridStyle}" HeadersVisibility="All" 
+                  ColumnHeaderStyle="{StaticResource RoundedHeaderStyle}" RowStyle="{StaticResource CustomDataGridRow}" CellStyle="{StaticResource CustomDataGridCell}">
         </DataGrid>
 
         <TextBlock x:Name="NoTasks"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="You don't have any tasks yet" VerticalAlignment="Center" FontSize="16"/>
 
         <WrapPanel  Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button FontSize="16" Content="Add Task" Name="AddTaskButton" Width="130" Height="30" Click="AddTaskButtonClick" Margin="0,0,30,0"/>
-            <Button FontSize="16" Content="Add Category" Name="AddCategoryButton" Width="130" Click="AddCategoryButtonClick" Margin="30,0,30,0"/>
-            <Button FontSize="16" Content="View Progress" x:Name="ViewProgressButton" Width="130"  Margin="30,0,0,0" Click="ViewProgressButtonClick"/>
+            <Button Content="Add Task" Name="AddTaskButton" Click="AddTaskButtonClick" Margin="0,0,30,0" Style="{StaticResource BtnBlue}"/>
+            <Button Content="Add Category" Name="AddCategoryButton" Click="AddCategoryButtonClick" Margin="30,0,30,0" Style="{StaticResource BtnYellow}"/>
+            <Button Content="View Progress" x:Name="ViewProgressButton" Margin="30,0,0,0" Click="ViewProgressButtonClick" Style="{StaticResource BtnGreen}"/>
         </WrapPanel>
     </Grid>
 </Window>

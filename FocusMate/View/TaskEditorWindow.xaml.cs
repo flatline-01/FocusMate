@@ -3,6 +3,7 @@ using Npgsql;
 using Task = FocusMate.Model.Task;
 using FocusMate.Model;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FocusMate
 {
@@ -42,36 +43,52 @@ namespace FocusMate
                 CategoriesComboBox.ItemsSource = categories;
         }
 
+        private void CheckIfDateInThePast(object sender, RoutedEventArgs e) {
+            DatePicker datePicker = (DatePicker) sender;
+
+            if (datePicker.SelectedDate < DateTime.Today) {
+                MessageBox.Show("The date shouldn't be in the past.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                datePicker.SelectedDate = DateTime.Today;
+            }
+        }
+
         private void SaveTaskButtonClick(object sender, RoutedEventArgs e)
         {
-            int categoryId = _categoryRepository.GetCategoryIdByName(CategoriesComboBox.SelectedItem.ToString());
-            string message = "";
-            bool wasNull = false;
+            if (CategoriesComboBox.SelectedItem is null || TaskTitleTextBox.Text is null || DatePicker.SelectedDate is null)
+                MessageBox.Show("You must specify values for each field.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            if (_task == null)
+            else
             {
-                wasNull = true;
-                _task = new Task();
-            }
+                int categoryId = _categoryRepository.GetCategoryIdByName(CategoriesComboBox.SelectedItem.ToString());
+                string message = "";
+                bool wasNull = false;
 
-            _task.Title = TaskTitleTextBox.Text;
-            _task.CategoryId = categoryId;
-            _task.Date = DatePicker.SelectedDate.Value;
-            _task.IsDone = false;
+                if (_task == null)
+                {
+                    wasNull = true;
+                    _task = new Task();
+                }
 
-            if (wasNull)
-            {
-                _taskRepository.CreateTask(_task);
-                message = $"Task \"{_task.Title}\" created successfully.";
-            }
-            else {
-                _taskRepository.UpdateTask(_task);
-                message = $"Task \"{_task.Title}\" updated successfully.";
-            }
+                _task.Title = TaskTitleTextBox.Text;
+                _task.CategoryId = categoryId;
+                _task.Date = DatePicker.SelectedDate.Value;
+                _task.IsDone = false;
 
-            _task = null;
-            MessageBox.Show(message);
-            ClearFields();
+                if (wasNull)
+                {
+                    _taskRepository.CreateTask(_task);
+                    message = $"Task \"{_task.Title}\" created successfully.";
+                }
+                else
+                {
+                    _taskRepository.UpdateTask(_task);
+                    message = $"Task \"{_task.Title}\" updated successfully.";
+                }
+
+                _task = null;
+                MessageBox.Show(message, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                ClearFields();
+            }
         }
 
         private void ClearFields() {

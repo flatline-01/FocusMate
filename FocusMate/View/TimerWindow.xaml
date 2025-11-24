@@ -5,19 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusMate"
         mc:Ignorable="d"
-        Title="TimerWindow" Height="400" Width="400" ResizeMode="CanMinimize">
-    <Grid>
+        Title="Timer" Height="400" Width="400" ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Background="#952C2C">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="236*"/>
+            <RowDefinition Height="71*"/>
+            <RowDefinition Height="77*"/>
         </Grid.RowDefinitions>
-        <WrapPanel Height="200" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock x:Name="TimerDisplay" FontSize="72"  Width="300" Text="00:00" TextAlignment="Center"/>
-            <TextBlock x:Name="TaskTitle" TextWrapping="Wrap" Width="300" FontSize="24" TextAlignment="Center" Margin="0,30,0,0"/>
+        
+        
+        <Image Source="/Resource/pomodoro_icon.png" Width="250" Panel.ZIndex="-1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
+        <TextBlock x:Name="TimerDisplay" FontSize="80"  Width="300" Text="00:00" TextAlignment="Center" FontWeight="Bold" Foreground="#ffff" 
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="0">
+            <TextBlock.Effect>
+                <DropShadowEffect ShadowDepth="4" Direction="330" Color="Black" Opacity="0.5" BlurRadius="4"/>
+            </TextBlock.Effect>
+        </TextBlock>
+
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Style="{StaticResource CustomLabel}" Content="Task:" Grid.Row="1" FontSize="24"/>
+            <TextBlock x:Name="TaskTitle" TextWrapping="Wrap" Width="200" FontSize="24" Foreground="#ffff" VerticalAlignment="Center"/>
         </WrapPanel>
-        <WrapPanel Grid.Row="1" VerticalAlignment="Center">
-            <Button Content="Stop" FontSize="24" Width="150" Height="50" Click="StopTimerButtonClick" Margin="25,0,0,0"/>
-            <Button Content="Continue" FontSize="24" Width="150" Height="50" Click="ContinueTimerButtonClick" Margin="50,0,0,0"/>
+        
+        <WrapPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Content="Stop" Click="StopTimerButtonClick" Style="{StaticResource BtnRed}" Width="120"/>
+            <Button Content="Continue" Click="ContinueTimerButtonClick" Margin="50,0,0,0" Style="{StaticResource BtnGreen}" Width="120"/>
         </WrapPanel>
     </Grid>
 </Window>

@@ -41,9 +41,30 @@ namespace FocusMate.Repository
                 command.ExecuteNonQuery();
             }
             catch (NpgsqlException e) {
-                MessageBox.Show("You can't delete this category because you have tasks with it.");
+                MessageBoxResult result = MessageBox.Show("There are several tasks that belong to this category, so it cannot be deleted. Delete the tasks along with the category?",
+                                                          "Info", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    DeleteCategoryAndTaks(id);
+                }
             }
         }
+
+        public void DeleteCategoryAndTaks(int id) {
+            var command = new NpgsqlCommand($"DELETE CASCADE FROM {_tableName} WHERE id = @id",
+                _connection);
+            command.Parameters.AddWithValue("@id", id);
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (NpgsqlException e)
+            {
+                MessageBox.Show("Something went wrong when deleting the category.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         public List<Category> GetAllCategories()
         {

@@ -13,6 +13,7 @@ namespace FocusMate
     {
         TaskRepository _taskRepository;
         CategoryRepository _categoryRepository;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,6 +29,13 @@ namespace FocusMate
 
         public void LoadContent() {
             List<Task> tasks = _taskRepository.GetAllPendingTasks();
+
+            if (tasks.Count == 0)
+            {
+                NoTasks.Visibility = Visibility.Visible;
+                //tasks.Add(new Task());
+            }
+
             if (tasks.Count > 0)
                 NoTasks.Visibility = Visibility.Collapsed;
 
@@ -104,7 +112,6 @@ namespace FocusMate
             (sender as Window).Closing -= CategoryEditorWindowClosing;
         }
 
-
         private void ViewProgressButtonClick(object sender, RoutedEventArgs e)
         {
             ProgressWindow window = new ProgressWindow();
@@ -118,7 +125,7 @@ namespace FocusMate
         }
 
         private void EditTaskButtonClick(object sender, RoutedEventArgs e) {
-            Task task = (Task) ((IWindow)this).GetElement((Button) sender, TasksList);
+            Task task = (Task)((IWindow)this).GetElement((Button) sender, TasksList);
             var window = new TaskEditorWindow(task);
             window.Closing += TaskEditorWindowClosing;
             window.ShowDialog();
@@ -132,7 +139,7 @@ namespace FocusMate
 
         private async void TaskCompletingHandler(object sender, EventArgs e) {
             CheckBox cb = (CheckBox) sender;
-            Task task = (Task) ((IWindow)this).GetElement(cb, TasksList);
+            Task task = (Task)((IWindow)this).GetElement(cb, TasksList);
             task.IsDone = true;
             _taskRepository.UpdateTask(task);
 

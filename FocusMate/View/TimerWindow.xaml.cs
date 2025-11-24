@@ -67,7 +67,7 @@ namespace FocusMate
         private void PlaySound() {
             SoundPlayer player;
             using (Stream stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("FocusMate.Resource.timerSound.wav")) {
+                                           .GetManifestResourceStream("FocusMate.Resource.timerSound.wav")) {
                 player = new SoundPlayer(stream);
                 player.Play();
             }

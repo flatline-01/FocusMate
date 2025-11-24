@@ -14,10 +14,14 @@ namespace FocusMate.Repository
         public DatabaseConnector() {
             SetVariables();
             if (_username == null || _password == null) { 
-                var window = new DatabaseCredentialsWindow();
-                window.Closing += DatabaseCredentialsWindowClosing;
-                window.ShowDialog();
+                AskForCredentials();
             }
+        }
+
+        private void AskForCredentials() {
+            var window = new DatabaseCredentialsWindow();
+            window.Closing += DatabaseCredentialsWindowClosing;
+            window.ShowDialog();
         }
 
         private void DatabaseCredentialsWindowClosing(object sender, CancelEventArgs e)
@@ -41,7 +45,8 @@ namespace FocusMate.Repository
                 connection.Open();
             }
             catch (Exception ex) { 
-                MessageBox.Show(ex.Message);    
+                MessageBox.Show(ex.Message);
+                AskForCredentials();
             }
             return connection;
         }

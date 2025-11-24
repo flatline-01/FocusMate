@@ -21,7 +21,7 @@ namespace FocusMate.View
             _categoryRepository = new CategoryRepository(connection);
 
             LoadContent();
-            CalculateStatsForLastWeek();
+            CalculateStatsForThisWeek();
             CalculateStatsForAllTime();
         }
 
@@ -83,21 +83,24 @@ namespace FocusMate.View
             }
         }
 
-        private void CalculateStatsForLastWeek() { 
+        private void CalculateStatsForThisWeek() {
             DateTime today = DateTime.Today;
             DayOfWeek weekStart = DayOfWeek.Monday;
+            DayOfWeek weekEnd = DayOfWeek.Sunday;
 
-            while (today.DayOfWeek != weekStart) 
+            while (today.DayOfWeek != weekStart)
                 today = today.AddDays(-1);
 
-            string previousWeekStart = today.AddDays(-7).ToString("yyyy-MM-dd");
-            string previousWeekEnd = today.AddDays(-1).ToString("yyyy-MM-dd");
+            string thisWeekStart = today.ToString("yyyy-MM-dd");
 
-            SolvedTasksLastWeek.Text = $"{_taskRepository.CountNumberOfSovedTasksLastWeek(
-                previousWeekStart, previousWeekEnd)}";
+            while (today.DayOfWeek != weekEnd)
+                today = today.AddDays(1);
 
-            UnsolvedTasksLastWeek.Text = $"{_taskRepository.CountNumberOfUnsolvedTasksLastWeek(
-                previousWeekStart, previousWeekEnd)}";
+            string thisWeekEnd = today.ToString("yyyy-MM-dd");
+
+            SolvedTasksThisWeek.Text = $"{_taskRepository.CountNumberOfSovedTasksForPeriod(thisWeekStart, thisWeekEnd)}";
+            UnsolvedTasksThisWeek.Text = $"{_taskRepository.CountNumberOfUnsolvedTasksForPeriond(thisWeekStart, thisWeekEnd)}";
+
         }
 
         private void CalculateStatsForAllTime()
