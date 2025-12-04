@@ -16,7 +16,7 @@ namespace FocusMate
         {
             InitializeComponent();
             InitializeTimer((int) Sessions.Work);
-            TaskTitle.Text = taskTitle; 
+            TaskTitle.Text = taskTitle.Length > 40 ? taskTitle.Substring(0, 40) + "..." : taskTitle;
         }
 
         private void InitializeTimer(int duration) {
