@@ -12,7 +12,9 @@ A task manager programme written in C# with a Pomodoro timer.
 
 4. Import focus_mate.sql to your database 
 
-> psql -h hostname -d databasename -U username -f file.sql
+```
+psql -h hostname -d databasename -U username -f file.sql
+```
 
 5. Launch the programme. Enter your PostgreSQL username and password.
 
